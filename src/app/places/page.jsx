@@ -46,29 +46,33 @@ export default function Places() {
             .filter((place) => place.image && !place.image.includes('placeholder'))
             .map((place, index) => {
               const slug = encodeURIComponent(place.title.toLowerCase().replace(/\s+/g, '-'));
+
               return (
-                <Link
-                  key={index}
-                  href={{
-                    pathname: `/attraction_info/${slug}`,
-                    query: {
-                      title: place.title,
-                      address: place.address,
-                      image: place.image,
-                      lat: place.lat,
-                      lon: place.lon,
-                    },
-                  }}
-                  className={styles.cardLink}
-                >
-                  <Card
-                    title={place.title}
-                    address={place.address}
-                    image={place.image}
-                    lat={place.lat}
-                    lon={place.lon}
-                  />
-                </Link>
+                <div key={index} className={styles.cardLink}>
+                  <Link
+                    href={{
+                      pathname: `/attraction_info/${slug}`,
+                      query: {
+                        title: place.title,
+                        address: place.address,
+                        image: place.image,
+                        lat: place.lat,
+                        lon: place.lon,
+                        description: place.description || '',
+                        phone: place.phone || '',
+                        website: place.website || '',
+                      },
+                    }}
+                  >
+                    <Card
+                      title={place.title}
+                      address={place.address}
+                      image={place.image}
+                      lat={place.lat}
+                      lon={place.lon}
+                    />
+                  </Link>
+                </div>
               );
             })}
         </div>

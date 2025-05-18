@@ -6,7 +6,7 @@ import Image from 'next/image';
 const Origins = () => {
   return (
     <section className={styles.origins}>
-      <div className={styles.container}>
+      <div className={styles.center}>
         <h2 className={styles.title}>ORIGINS</h2>
         <div className={styles.content}>
           <div className={styles.imageWrapper}>

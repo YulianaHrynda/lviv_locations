@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* full viewport height */
+  padding: 2rem;
+  text-align: center;
+  background-color: hsl(0, 0%, 100%);
+  color: #000000;
+  font-family: 'Alexandria', sans-serif;
+}
+
+.heading {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  font-weight: 800;
+}
+
+.imageWrapper {
+  max-width: 300px;
+  width: 70%;
+  border-radius: 12px;
+  overflow: hidden;
+}

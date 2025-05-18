@@ -1,5 +1,11 @@
 .origins {
-  padding: 4rem 4rem 0 4rem;
+    padding: 4rem 4rem 0 4rem;
+}
+
+@media (max-width: 768px) {
+    .origins {
+        padding: 2rem 2rem 0 2rem;
+    }
 }
 
 .container {
@@ -7,12 +13,20 @@
 }
 
 .title {
-    font-size: 6rem;
+    font-size: clamp(2.5rem, 6vw, 6rem);
     font-weight: 700;
     position: absolute;
     top: -1.5rem;
     left: 0;
     z-index: 2;
+}
+
+@media (max-width: 768px) {
+    .title {
+        position: static;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
 }
 
 .content {
@@ -23,26 +37,48 @@
     padding-top: 4rem;
 }
 
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+        gap: 2rem;
+        padding-top: 2rem;
+    }
+}
+
 .imageWrapper {
-    flex: 1 1 400px;
+    flex: 0 0 auto;
+    width: 700px;     /* fixed size */
+    height: auto;
     position: relative;
     z-index: 1;
 }
 
 .image {
-    width: 100%;
+    width: 700px;     /* match wrapper */
     height: auto;
     display: block;
     object-fit: cover;
-    border-radius: 4px;
 }
 
 .text {
     flex: 1 1 400px;
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
     line-height: 1.6;
 }
 
 .text strong {
     font-weight: 700;
+}
+
+.center {
+    max-width: 98%;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .center {
+        padding: 0 1rem;
+    }
 }

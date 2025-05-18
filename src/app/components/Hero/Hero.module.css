@@ -1,15 +1,26 @@
 .hero {
+    margin-top: 20px;
     padding: 4rem 4rem 0rem;
     position: relative;
+    animation: fadeInUp 2s ease forwards;
+    -webkit-animation: fadeInUp 2s ease forwards;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 2rem 2rem 0;
+    }
 }
 
 .heading {
-    font-size: 6rem;
+    font-size: clamp(2.5rem, 6vw, 6rem);
     font-weight: 300;
     line-height: 0.9;
     display: flex;
     flex-direction: column;
     position: relative;
+    animation: fadeInLeft 1.2s ease forwards;
+    opacity: 0; /* Start hidden for animation */
 }
 
 .heading h1 {
@@ -19,18 +30,30 @@
 
 .heading span {
     display: inline-block;
+    opacity: 0;
+    animation: fadeInRight 1s ease forwards;
+    animation-delay: var(--delay, 0s);
 }
 
 .heading span:nth-child(1) {
     padding-left: 0;
+    --delay: 0.3s;
 }
 
 .heading span:nth-child(2) {
     padding-left: 7rem;
+    --delay: 0.6s;
 }
 
 .heading span:nth-child(3) {
     padding-left: 0;
+    --delay: 0.9s;
+}
+
+@media (max-width: 768px) {
+    .heading span:nth-child(2) {
+        padding-left: 2rem;
+    }
 }
 
 .worldWrapper {
@@ -40,31 +63,51 @@
     z-index: 2;
 }
 
+@media (max-width: 768px) {
+    .worldWrapper {
+        top: 16rem;
+    }
+}
+
 .outlined {
     -webkit-text-stroke: 1px #000;
     color: transparent;
-    font-size: 8rem;
+    font-size: clamp(3rem, 8vw, 8rem);
     font-weight: 300;
+    animation: strokeGlow 2s ease-in-out infinite alternate;
 }
 
 .imageWrapper {
-    margin-top: 3rem;
+    margin-top: -150px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     padding-right: 4rem;
     position: relative;
     z-index: 1;
-    width: 700px;
-    height: 500px;
+    flex: 1 1 400px;
+    max-width: 700px;
+    width: 100%;
+    height: 600px;
     overflow: hidden;
     margin-left: auto;
+    animation: fadeIn 1.5s ease forwards;
+    opacity: 0;
+}
+
+@media (max-width: 768px) {
+    .imageWrapper {
+        padding-right: 2rem;
+    }
 }
 
 .image {
-    max-width: 700px;
     width: 100%;
+    height: auto;
     display: block;
+    object-fit: cover;
+    transform-origin: center bottom;
+    animation: slightZoom 5s ease-in-out infinite alternate;
 }
 
 .caption {
@@ -74,4 +117,68 @@
     text-align: right;
     width: 100%;
     padding-right: 6%;
+    animation: fadeInUp 1.7s ease forwards;
+    opacity: 0;
 }
+
+@media (max-width: 768px) {
+    .caption {
+        font-size: 1rem;
+        padding-right: 4%;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes strokeGlow {
+    0% {
+        -webkit-text-stroke-color: #000;
+        color: transparent;
+        filter: drop-shadow(0 0 2px black);
+    }
+    100% {
+        -webkit-text-stroke-color: #444;
+        filter: drop-shadow(0 0 8px #555);
+    }
+}
+
