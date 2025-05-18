@@ -1,30 +1,38 @@
 'use client';
 
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
 import { useEffect, useState } from 'react';
+import { GoogleMap, MarkerF, InfoWindowF, useJsApiLoader } from '@react-google-maps/api';
 import styles from './Map.module.css';
 import ToggleFilterBox from '../ToggleFilterBox/ToggleFilterBox';
-import 'leaflet/dist/leaflet.css';
 
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+const center = { lat: 49.8397, lng: 24.0297 };
 
-const DefaultIcon = L.icon({
-  iconUrl: icon.src || icon,
-  shadowUrl: iconShadow.src || iconShadow,
-});
-L.Marker.prototype.options.icon = DefaultIcon;
+const containerStyle = {
+  width: '100%',
+  height: '500px',
+};
 
-const center = {
-  lat: 49.8397,
-  lng: 24.0297,
+const getMarkerIcon = (type) => {
+  switch (type) {
+    case 'museums':
+      return 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+    case 'places':
+      return 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+    case 'attractions':
+      return 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+    default:
+      return undefined;
+  }
 };
 
 export default function MapComponent() {
   const [selectedCategories, setSelectedCategories] = useState(['museums', 'places', 'attractions']);
   const [locations, setLocations] = useState([]);
   const [activeMarker, setActiveMarker] = useState(null);
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+  });
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -71,38 +79,33 @@ export default function MapComponent() {
     );
   };
 
+  if (!isLoaded) return <div>Loading map...</div>;
+
   return (
     <div className={styles.mapContainer}>
       <div className={styles.mapBox}>
-        <MapContainer center={center} zoom={13} style={{ height: '500px', width: '100%' }}>
-          <TileLayer
-            attribution='© OpenStreetMap contributors'
-            url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-          />
-
+        <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={13}>
           {locations
             .filter((loc) => selectedCategories.includes(loc.type))
             .map((location, index) => (
-              <Marker
+              <MarkerF
                 key={index}
                 position={location.position}
-                eventHandlers={{
-                  click: () => setActiveMarker(index),
-                }}
+                icon={getMarkerIcon(location.type)}
+                onClick={() => setActiveMarker(index)}
               >
                 {activeMarker === index && (
-                  <Popup>
+                  <InfoWindowF position={location.position} onCloseClick={() => setActiveMarker(null)}>
                     <div className={styles.infoBox}>
                       <img src={location.image} className={styles.infoImage} alt={location.title} />
                       <h3>{location.title}</h3>
                       <p>{location.address}</p>
-                      <p>★ 5/5</p>
                     </div>
-                  </Popup>
+                  </InfoWindowF>
                 )}
-              </Marker>
+              </MarkerF>
             ))}
-        </MapContainer>
+        </GoogleMap>
 
         <ToggleFilterBox
           selectedCategories={selectedCategories}
