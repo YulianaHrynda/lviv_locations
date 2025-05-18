@@ -1,7 +1,9 @@
 import Header from '../components/Header/Header';
 import Description from './components/Description';
-import Reviews from './components/Reviews';
-import RewievForm from './components/RewievForm';
+import Reviews from './components/Reviews/Reviews';
+import ReviewForm from './components/Reviews/ReviewForm';
+
+const PLACE_ID = "arsenal-museum";
 
 export default function HomePage() {
   return (
@@ -9,8 +11,8 @@ export default function HomePage() {
       <Header />
       <main>
         <Description />
-        <Reviews />
-        <RewievForm />
+        <Reviews placeId={PLACE_ID} />
+        <ReviewForm placeId={PLACE_ID} />
       </main>
     </>
   );
