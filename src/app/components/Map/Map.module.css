@@ -1,72 +1,94 @@
-@import url('leaflet/dist/leaflet.css');
-
 .mapContainer {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
-  }
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
   
-  .mapBox {
-    position: relative;
-    width: 90%;
-    max-width: 1000px;
-    height: 500px;
-  }
+.mapBox {
+  position: relative;
+  width: 90%;
+  max-width: 1000px;
+  height: 500px;
+}
+
+.filterBox {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  background: white;
+  padding: 1.2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  width: 240px;
+}
+
+.filterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterTitle {
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: black;
+  gap: 0.5rem;
+}
+
+.checkboxInput {
+  accent-color: black;
+  width: 18px;
+  height: 18px;
+}
+
+.infoBox {
+  max-width: 240px;
+}
+
+.infoImage {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
   
-  .filterBox {
-    position: absolute;
-    left: 20px;
-    bottom: 20px;
-    background: white;
-    padding: 1.2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 2;
-    width: 240px;
-  }
-  
-  .filterHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .filterTitle {
-    font-weight: 700;
-    font-size: 1rem;
-    margin: 0;
-  }
-  
-  .closeBtn {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-  }
-  
-  .checkboxLabel {
-    display: flex;
-    align-items: center;
-    margin: 0.5rem 0;
-    font-size: 1rem;
-    color: black;
-    gap: 0.5rem;
-  }
-  
-  .checkboxInput {
-    accent-color: black;
-    width: 18px;
-    height: 18px;
-  }
-  
-  .infoBox {
-    max-width: 240px;
-  }
-  
-  .infoImage {
-    width: 100%;
-    border-radius: 8px;
-    margin-bottom: 8px;
-  }
-  
+.infoBox {
+  width: 200px;
+}
+
+.infoImage {
+  width: 100%;
+  height: auto;
+  margin-bottom: 0.5rem;
+}
+
+.infoButton {
+  margin-top: 0.5rem;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.infoButton:hover {
+  background-color: #004b99;
+}

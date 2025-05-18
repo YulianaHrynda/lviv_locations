@@ -100,6 +100,20 @@ export default function MapComponent() {
                       <img src={location.image} className={styles.infoImage} alt={location.title} />
                       <h3>{location.title}</h3>
                       <p>{location.address}</p>
+                      <button
+                        className={styles.infoButton}
+                        onClick={() => {
+                          const slug = encodeURIComponent(location.title.toLowerCase().replace(/\s+/g, '-'));
+                          const url = `/attraction_info/${slug}?title=${encodeURIComponent(
+                            location.title
+                          )}&address=${encodeURIComponent(location.address)}&image=${encodeURIComponent(
+                            location.image
+                          )}&lat=${location.position.lat}&lon=${location.position.lng}`;
+                          window.location.href = url;
+                        }}
+                      >
+                        More Info
+                      </button>
                     </div>
                   </InfoWindowF>
                 )}
