@@ -1,20 +1,15 @@
 import '../globals.css';
+import { Alexandria } from 'next/font/google';
 
-export const metadata = {
-  title: 'Lviv Sightseeings',
-  description: 'Discover the beauty of Lviv',
-};
+const alexandria = Alexandria({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+});
 
-export default function RootLayout({ children }) {
+export default function Layout({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body>{children}</body>
-    </html>
+    <div className={alexandria.className}>
+      {children}
+    </div>
   );
 }

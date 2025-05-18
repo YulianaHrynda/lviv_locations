@@ -1,28 +1,38 @@
 'use client';
+
 import { useState } from 'react';
+import { addReview } from '../../../firebase/addReview';
 import styles from '../styles/review_form.module.css';
 
-const RewievForm = ({ placeId, onSubmitSuccess }) => {
+const ReviewForm = ({ placeId, onSubmitSuccess }) => {
   const [selectedRating, setSelectedRating] = useState(0);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
+    setSuccessMessage('');
 
-    const review = {
-      placeId,
-      name,
-      grade: selectedRating,
-      description,
-    };
+    try {
+      const normalizedPlaceId = placeId?.toLowerCase().replace(/\s+/g, '-');
+      await addReview(normalizedPlaceId, name, selectedRating, description);
 
-    console.log('Review submitted:', review);
+      setName('');
+      setDescription('');
+      setSelectedRating(0);
+      setSuccessMessage('Review submitted successfully!');
 
-    setName('');
-    setDescription('');
-    setSelectedRating(0);
-    if (onSubmitSuccess) onSubmitSuccess();
+      if (onSubmitSuccess) onSubmitSuccess();
+
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error) {
+      console.error('Error submitting review:', error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -58,9 +68,15 @@ const RewievForm = ({ placeId, onSubmitSuccess }) => {
             </div>
           </div>
 
-          <button type="submit" className={styles.submitButton}>
-            Submit
+          <button type="submit" className={styles.submitButton} disabled={submitting}>
+            {submitting ? 'Submitting…' : 'Submit'}
           </button>
+
+          {successMessage && (
+            <p style={{ marginTop: '1rem', color: 'green', fontWeight: 'bold' }}>
+              {successMessage}
+            </p>
+          )}
         </div>
 
         <div className={styles['right-section']}>
@@ -78,4 +94,4 @@ const RewievForm = ({ placeId, onSubmitSuccess }) => {
   );
 };
 
-export default RewievForm;
+export default ReviewForm;

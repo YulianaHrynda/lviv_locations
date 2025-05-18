@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import Header from '../../components/Header/Header';
 import Description from '../components/Description';
 import Reviews from '../components/Reviews';
-import RewievForm from '../components/ReviewForm';
+import ReviewForm from '../components/ReviewForm';
 import styles from './attraction.module.css';
 
 export default function AttractionPage() {
@@ -15,6 +15,8 @@ export default function AttractionPage() {
   const image = params.get('image');
   const lat = params.get('lat');
   const lon = params.get('lon');
+
+  const placeId = title?.toLowerCase().replace(/\s+/g, '-');
 
   return (
     <>
@@ -27,8 +29,8 @@ export default function AttractionPage() {
           lat={lat}
           lon={lon}
         />
-        <Reviews placeId={title} />
-        <RewievForm placeId={title} />
+        <Reviews placeId={placeId} />
+        <ReviewForm placeId={placeId} />
       </main>
     </>
   );
