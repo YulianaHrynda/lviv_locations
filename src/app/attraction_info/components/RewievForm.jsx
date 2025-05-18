@@ -1,12 +1,20 @@
 'use client';
 import { useState } from 'react';
-import styles from '../styles/review_form.module.css'; // import the CSS module
+import { addReview } from '../firebase/addReview';
+import styles from '../styles/review_form.module.css';
 
-const RewievForm = () => {
+const RewievForm = ({ placeId, onSubmitSuccess }) => {
   const [selectedRating, setSelectedRating] = useState(0);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
-  const handleStarClick = (rating) => {
-    setSelectedRating(rating);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await addReview(placeId, name, selectedRating, description);
+    setName('');
+    setDescription('');
+    setSelectedRating(0);
+    if (onSubmitSuccess) onSubmitSuccess(); // refresh reviews
   };
 
   return (
@@ -14,18 +22,24 @@ const RewievForm = () => {
       <h1>
         SHARE <span>YOUR</span> THOUGHTS
       </h1>
-      <form onSubmit={(e) => e.preventDefault()} className={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles['left-section']}>
           <div className={styles['input-group']}>
             <label htmlFor="name">YOUR NAME</label>
-            <input type="text" id="name" name="name" required />
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
           </div>
 
           <div>
             <label className={styles.ratingLabel}>YOUR RATING</label>
             <div className={styles['rating-container']}>
               {[1, 2, 3, 4, 5].map((star) => (
-                <span key={star} onClick={() => handleStarClick(star)}>
+                <span key={star} onClick={() => setSelectedRating(star)}>
                   {star <= selectedRating ? '★' : '☆'}
                 </span>
               ))}
@@ -39,7 +53,13 @@ const RewievForm = () => {
 
         <div className={styles['right-section']}>
           <label htmlFor="review">YOUR THOUGHTS</label>
-          <textarea id="review" name="review" rows="4" required></textarea>
+          <textarea
+            id="review"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows="4"
+            required
+          ></textarea>
         </div>
       </form>
     </div>
