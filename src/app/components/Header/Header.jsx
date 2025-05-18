@@ -12,10 +12,10 @@ const Header = () => {
       </div>
       <div className={styles.navWrapper}>
         <nav className={styles.nav}>
-          <Link href="#map">Map</Link>
-          <Link href="#museums">Museums</Link>
-          <Link href="#places">Places</Link>
-          <Link href="#attractions">Attractions</Link>
+          <Link href="/map">Map</Link>
+          <Link href="/museums">Museums</Link>
+          <Link href="/places">Places</Link>
+          <Link href="/attractions">Attractions</Link>
         </nav>
       </div>
     </header>

@@ -1,0 +1,54 @@
+.heritage {
+  position: relative;
+  padding: 0;
+  overflow: visible;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 700px;
+  padding-bottom: 2rem;
+}
+
+.imageWrapper {
+  position: absolute;
+  top: 0;
+  left: -2em;
+  width: 600px;
+  height: 600px;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+
+.title {
+  position: absolute;
+  top: 20rem;
+  right: 15%;
+  font-size: 6rem;
+  font-weight: 700;
+  z-index: 2;
+}
+
+.description {
+  position: absolute;
+  top: 28rem;
+  right: 15%;
+  max-width: 500px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: left;
+  z-index: 2;
+}
+
+.description strong {
+  font-weight: 700;
+}
