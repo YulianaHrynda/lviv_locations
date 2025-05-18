@@ -1,82 +1,52 @@
 export async function GET() {
-  const endpoint = 'https://query.wikidata.org/sparql';
+  const API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 
-  const query = `
-    SELECT DISTINCT ?item ?itemLabel ?address ?locationLabel ?image ?coord WHERE {
-      ?item wdt:P31/wdt:P279* wd:Q33506 .
-      {
-        { ?item wdt:P276 ?location }
-        UNION
-        { ?item wdt:P131 ?location }
-        UNION
-        { ?item wdt:P137 ?location }
-      }
-      VALUES ?location {
-        wd:Q360
-        wd:Q36036
-        wd:Q36033
-      }
-      OPTIONAL { ?item wdt:P18 ?image }
-      OPTIONAL { ?item wdt:P625 ?coord }
-      OPTIONAL { ?item wdt:P6375 ?addr1 }
-      OPTIONAL { ?item wdt:P969 ?addr2 }
-      BIND(COALESCE(?addr1, ?addr2) AS ?address)
-      SERVICE wikibase:label {
-        bd:serviceParam wikibase:language "uk,en" .
-      }
-    }
-  `;
+  if (!API_KEY) {
+    return new Response(JSON.stringify({ error: 'API key is missing' }), { status: 500 });
+  }
 
-  const url = `${endpoint}?format=json&query=${encodeURIComponent(query)}`;
+  const query = 'museums in Lviv';
 
   try {
-    const res = await fetch(url, {
+    const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
+      query
+    )}&key=${API_KEY}`;
+
+    const searchRes = await fetch(searchUrl, {
       headers: {
-        'Accept': 'application/sparql-results+json',
-        'User-Agent': 'LvivSightseeingApp/1.0 (lviv@openai.com)',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
     });
 
-    if (!res.ok) {
-      console.error('Wikidata fetch failed:', res.statusText);
-      return new Response(JSON.stringify({ error: 'Failed to fetch data from Wikidata' }), {
-        status: 500,
-      });
+    const searchData = await searchRes.json();
+
+    if (!searchData.results || searchData.results.length === 0) {
+      return new Response(JSON.stringify([]), { status: 200 });
     }
 
-    const data = await res.json();
+    const results = searchData.results.map((place) => {
+      const photoRef = place.photos?.[0]?.photo_reference;
 
-    const museums = data.results.bindings.map((entry) => {
-      const name = entry.itemLabel?.value || 'Unknown';
-      const rawAddress = entry.address?.value;
-      const location = entry.locationLabel?.value;
-      const address = rawAddress || location || 'Lviv';
-      const image = entry.image?.value || '/images/placeholder.svg';
-      const coord = entry.coord?.value || '';
-      let lat = null;
-      let lon = null;
-
-      if (coord && coord.startsWith('Point(')) {
-        const parts = coord.replace('Point(', '').replace(')', '').split(' ');
-        lon = parseFloat(parts[0]);
-        lat = parseFloat(parts[1]);
-      }
+      const image = photoRef
+        ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${photoRef}&key=${API_KEY}`
+        : '/images/placeholder.svg';
 
       return {
-        title: name,
-        address,
+        title: place.name,
+        address: place.formatted_address || 'Lviv',
         image,
-        lat,
-        lon,
+        lat: place.geometry?.location?.lat,
+        lon: place.geometry?.location?.lng,
       };
     });
 
-    return new Response(JSON.stringify(museums), {
+    return new Response(JSON.stringify(results), {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (err) {
-    console.error('Landmark API error:', err);
-    return new Response(JSON.stringify({ error: 'Failed to load landmark data.' }), {
+    console.error('Google Places API error:', err);
+    return new Response(JSON.stringify({ error: 'Failed to fetch museum data' }), {
       status: 500,
     });
   }

@@ -1,70 +1,53 @@
 export async function GET() {
-  const endpoint = 'https://query.wikidata.org/sparql';
+  const API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 
-  const query = `
-    SELECT DISTINCT ?item ?itemLabel ?locationLabel ?image ?coord WHERE {
-      ?item wdt:P31/wdt:P279* wd:Q570116 .
-      {
-        { ?item wdt:P276 ?location }
-        UNION
-        { ?item wdt:P131 ?location }
-        UNION
-        { ?item wdt:P137 ?location }
-      }
-      VALUES ?location {
-        wd:Q360       # Lviv city
-        wd:Q36033     # Lviv Oblast
-        wd:Q36036     # Lviv Raion
-      }
+  if (!API_KEY) {
+    return new Response(JSON.stringify({ error: 'API key is missing' }), { status: 500 });
+  }
 
-      OPTIONAL { ?item wdt:P18 ?image }
-      OPTIONAL { ?item wdt:P625 ?coord }
-
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "uk,en" }
-    }
-    LIMIT 50
-  `;
-
-  const url = `${endpoint}?format=json&query=${encodeURIComponent(query)}`;
+  // Search for architectural landmarks
+  const query = 'architectural landmarks in Lviv';
 
   try {
-    const res = await fetch(url, {
+    const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
+      query
+    )}&key=${API_KEY}`;
+
+    const searchRes = await fetch(searchUrl, {
       headers: {
-        'Accept': 'application/sparql-results+json',
-        'User-Agent': 'LvivSightseeingApp/1.0 (lviv@openai.com)',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
     });
 
-    const data = await res.json();
+    const searchData = await searchRes.json();
 
-    const attractions = data.results.bindings
-      .filter((entry) => entry.image?.value)
-      .map((entry) => {
-        const coord = entry.coord?.value;
-        let lat = null;
-        let lon = null;
+    if (!searchData.results || searchData.results.length === 0) {
+      return new Response(JSON.stringify([]), { status: 200 });
+    }
 
-        if (coord?.startsWith('Point(')) {
-          const [lonStr, latStr] = coord.replace('Point(', '').replace(')', '').split(' ');
-          lat = parseFloat(latStr);
-          lon = parseFloat(lonStr);
-        }
+    const results = searchData.results.map((place) => {
+      const photoRef = place.photos?.[0]?.photo_reference;
 
-        return {
-          title: entry.itemLabel?.value || 'Untitled',
-          address: entry.locationLabel?.value || 'Lviv',
-          image: entry.image?.value,
-          lat,
-          lon,
-        };
-      });
+      const image = photoRef
+        ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${photoRef}&key=${API_KEY}`
+        : '/images/placeholder.svg';
 
-    return new Response(JSON.stringify(attractions), {
+      return {
+        title: place.name,
+        address: place.formatted_address || 'Lviv',
+        image,
+        lat: place.geometry?.location?.lat,
+        lon: place.geometry?.location?.lng,
+      };
+    });
+
+    return new Response(JSON.stringify(results), {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (err) {
-    console.error('Attractions API error:', err);
-    return new Response(JSON.stringify({ error: 'Failed to load attraction data' }), {
+    console.error('Google Places API error:', err);
+    return new Response(JSON.stringify({ error: 'Failed to fetch architecture data' }), {
       status: 500,
     });
   }

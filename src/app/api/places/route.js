@@ -1,90 +1,50 @@
 export async function GET() {
-  const endpoint = 'https://query.wikidata.org/sparql';
+  const API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+  if (!API_KEY) {
+    return new Response(JSON.stringify({ error: 'API key is missing' }), { status: 500 });
+  }
 
-  const query = `
-    SELECT DISTINCT ?item ?itemLabel ?locationLabel ?address ?image ?coord WHERE {
-      ?item wdt:P31/wdt:P279* ?type .
-
-      VALUES ?type {
-        wd:Q30022    # café
-        wd:Q11707    # restaurant
-        wd:Q194251   # bar
-        wd:Q570116   # pub
-        wd:Q213441   # coffeehouse
-        wd:Q1107168  # pizzeria
-        wd:Q18536342 # wine bar
-        wd:Q18559913 # cocktail bar
-        wd:Q1208345  # beer garden
-        wd:Q1309717  # bistro
-      }
-
-      {
-        { ?item wdt:P276 ?location }
-        UNION
-        { ?item wdt:P131 ?location }
-        UNION
-        { ?item wdt:P740 ?location }
-        UNION
-        { ?item wdt:P159 ?location }
-      }
-
-      VALUES ?location {
-        wd:Q360
-        wd:Q36036
-        wd:Q36033
-      }
-
-      OPTIONAL { ?item wdt:P18 ?image }
-      OPTIONAL { ?item wdt:P625 ?coord }
-      OPTIONAL { ?item wdt:P6375 ?address }
-
-      SERVICE wikibase:label {
-        bd:serviceParam wikibase:language "uk,en" .
-      }
-    }
-    LIMIT 100
-  `;
-
-  const url = `${endpoint}?format=json&query=${encodeURIComponent(query)}`;
+  const query = 'cafes, restaurants, bars in Lviv';
 
   try {
-    const res = await fetch(url, {
+    const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${API_KEY}`;
+
+    const searchRes = await fetch(searchUrl, {
       headers: {
-        'Accept': 'application/sparql-results+json',
-        'User-Agent': 'LvivSightseeingApp/1.0 (lviv@openai.com)',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
     });
 
-    const json = await res.json();
+    const searchData = await searchRes.json();
+    console.log('Google Places Response:', JSON.stringify(searchData, null, 2));
 
-    const results = json.results.bindings
-      .filter((entry) => entry.image?.value)
-      .map((entry) => {
-        let lat = null;
-        let lon = null;
+    if (!searchData.results || searchData.results.length === 0) {
+      return new Response(JSON.stringify([]), { status: 200 });
+    }
 
-        const coord = entry.coord?.value;
-        if (coord?.startsWith('Point(')) {
-          const [lonStr, latStr] = coord.replace('Point(', '').replace(')', '').split(' ');
-          lat = parseFloat(latStr);
-          lon = parseFloat(lonStr);
-        }
+    const enriched = searchData.results.map((place) => {
+      const photoRef = place.photos?.[0]?.photo_reference;
 
-        return {
-          title: entry.itemLabel?.value || 'Untitled',
-          address: entry.address?.value || entry.locationLabel?.value || 'Lviv',
-          image: entry.image?.value,
-          lat,
-          lon,
-        };
-      });
+      const image = photoRef
+        ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${photoRef}&key=${API_KEY}`
+        : '/images/placeholder.svg';
 
-    return new Response(JSON.stringify(results), {
+      return {
+        title: place.name,
+        address: place.formatted_address || 'Lviv',
+        image,
+        lat: place.geometry?.location?.lat,
+        lon: place.geometry?.location?.lng,
+      };
+    });
+
+    return new Response(JSON.stringify(enriched), {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (err) {
-    console.error('Places API Error:', err);
-    return new Response(JSON.stringify({ error: 'Failed to load places' }), {
+    console.error('Google Places API error:', err);
+    return new Response(JSON.stringify({ error: 'Failed to fetch Google Places' }), {
       status: 500,
     });
   }
