@@ -1,5 +1,3 @@
-'use client';
-
 import styles from './Header.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,7 +6,9 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
-        <Image src="/logo.svg" alt="Lviv Logo" width={40} height={40} />
+        <Link href="/">
+          <Image src="/logo.svg" alt="Lviv Logo" width={40} height={40} />
+        </Link>
       </div>
       <div className={styles.navWrapper}>
         <nav className={styles.nav}>
