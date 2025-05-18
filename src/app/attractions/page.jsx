@@ -43,19 +43,6 @@ export default function Attractions() {
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
-<<<<<<< HEAD
-        <div className={`${styles.grid} ${!loading ? styles.loaded : ''}`}>
-          {attractions.map((item, index) => (
-            <Card
-              key={index}
-              title={item.title}
-              address={item.address}
-              image={item.image}
-              lat={item.lat}
-              lon={item.lon}
-            />
-          ))}
-=======
         <div className={styles.grid}>
           {attractions
             .filter((item) => item.image && !item.image.includes('placeholder'))
@@ -90,7 +77,6 @@ export default function Attractions() {
                 </div>
               );
             })}
->>>>>>> 095983499535cb0ef0d99cbc3d443b63f7e5caf8
         </div>
       </main>
     </>

@@ -41,19 +41,6 @@ export default function Places() {
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
-<<<<<<< HEAD
-        <div className={`${styles.grid} ${!loading ? styles.loaded : ''}`}>
-          {places.map((place, index) => (
-            <Card
-              key={index}
-              title={place.title}
-              address={place.address}
-              image={place.image}
-              lat={place.lat}
-              lon={place.lon}
-            />
-          ))}
-=======
         <div className={styles.grid}>
           {places
             .filter((place) => place.image && !place.image.includes('placeholder'))
@@ -88,7 +75,6 @@ export default function Places() {
                 </div>
               );
             })}
->>>>>>> 095983499535cb0ef0d99cbc3d443b63f7e5caf8
         </div>
       </main>
     </>
