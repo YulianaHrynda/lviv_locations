@@ -1,10 +1,9 @@
-// src/app/api/landmarks/route.js
-
 export async function GET() {
   const endpoint = 'https://query.wikidata.org/sparql';
+
   const query = `
-    SELECT DISTINCT ?item ?itemLabel ?locationLabel ?image ?coord WHERE {
-      ?item wdt:P31/wdt:P279* wd:Q33506 .  # Instance of museum or subclasses
+    SELECT DISTINCT ?item ?itemLabel ?address ?locationLabel ?image ?coord WHERE {
+      ?item wdt:P31/wdt:P279* wd:Q33506 .
       {
         { ?item wdt:P276 ?location }
         UNION
@@ -13,12 +12,15 @@ export async function GET() {
         { ?item wdt:P137 ?location }
       }
       VALUES ?location {
-        wd:Q360       # Lviv city
-        wd:Q36036     # Lviv Raion
-        wd:Q36033     # Lviv Oblast
+        wd:Q360
+        wd:Q36036
+        wd:Q36033
       }
       OPTIONAL { ?item wdt:P18 ?image }
       OPTIONAL { ?item wdt:P625 ?coord }
+      OPTIONAL { ?item wdt:P6375 ?addr1 }
+      OPTIONAL { ?item wdt:P969 ?addr2 }
+      BIND(COALESCE(?addr1, ?addr2) AS ?address)
       SERVICE wikibase:label {
         bd:serviceParam wikibase:language "uk,en" .
       }
@@ -31,7 +33,7 @@ export async function GET() {
     const res = await fetch(url, {
       headers: {
         'Accept': 'application/sparql-results+json',
-        'User-Agent': 'LvivSightseeingApp/1.0 (lviv@openai.com)', // Required by Wikidata
+        'User-Agent': 'LvivSightseeingApp/1.0 (lviv@openai.com)',
       },
     });
 
@@ -46,8 +48,10 @@ export async function GET() {
 
     const museums = data.results.bindings.map((entry) => {
       const name = entry.itemLabel?.value || 'Unknown';
-      const address = entry.locationLabel?.value || 'Lviv';
-      const image = entry.image?.value || '/placeholder.svg';
+      const rawAddress = entry.address?.value;
+      const location = entry.locationLabel?.value;
+      const address = rawAddress || location || 'Lviv';
+      const image = entry.image?.value || '/images/placeholder.svg';
       const coord = entry.coord?.value || '';
       let lat = null;
       let lon = null;
@@ -71,8 +75,8 @@ export async function GET() {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (err) {
-    console.error('API error:', err);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+    console.error('Landmark API error:', err);
+    return new Response(JSON.stringify({ error: 'Failed to load landmark data.' }), {
       status: 500,
     });
   }

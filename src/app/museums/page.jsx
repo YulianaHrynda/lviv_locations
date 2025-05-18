@@ -35,7 +35,7 @@ export default function Museums() {
         <h1 className={styles.title}>MUSEUMS</h1>
 
         <p className={styles.description}>
-          <span className={styles.superBold}>Lviv’s museums</span> offer a rich mix of history, art, and culture. These are sourced live from OpenStreetMap and enriched with Wikipedia.
+          Lviv’s museums offer a rich mix of history, art, and culture. From classical galleries to unique spots like the Pharmacy Museum and Prison on Lontskoho, each visit reveals a different side of the city’s story.
         </p>
 
         {loading && <p>Loading...</p>}
