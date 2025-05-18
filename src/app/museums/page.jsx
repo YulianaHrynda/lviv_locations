@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import Header from '../components/Header/Header';
 import Card from '../components/Card/Card';
 import styles from '../Page.module.css';
@@ -18,8 +19,8 @@ export default function Museums() {
         const data = await res.json();
         setMuseums(data);
       } catch (err) {
-        setError('Failed to load museum data.');
         console.error(err);
+        setError('Failed to load museum data.');
       } finally {
         setLoading(false);
       }
@@ -43,17 +44,37 @@ export default function Museums() {
         <div className={`${styles.grid} ${!loading ? styles.loaded : ''}`}>
           {museums
             .filter((museum) => museum.image && !museum.image.includes('placeholder'))
-            .map((museum, index) => (
-              <Card
-                key={index}
-                title={museum.title}
-                address={museum.address}
-                image={museum.image}
-                link={museum.link}
-                lat={museum.lat}
-                lon={museum.lon}
-              />
-            ))}
+            .map((museum, index) => {
+              const slug = encodeURIComponent(museum.title.toLowerCase().replace(/\s+/g, '-'));
+
+              return (
+                <div key={index} className={styles.cardLink}>
+                  <Link
+                    href={{
+                      pathname: `/attraction_info/${slug}`,
+                      query: {
+                        title: museum.title,
+                        address: museum.address,
+                        image: museum.image,
+                        lat: museum.lat,
+                        lon: museum.lon,
+                        description: museum.description || '',
+                        phone: museum.phone || '',
+                        website: museum.website || '',
+                      },
+                    }}
+                  >
+                    <Card
+                      title={museum.title}
+                      address={museum.address}
+                      image={museum.image}
+                      lat={museum.lat}
+                      lon={museum.lon}
+                    />
+                  </Link>
+                </div>
+              );
+            })}
         </div>
       </main>
     </>

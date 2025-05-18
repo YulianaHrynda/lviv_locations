@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header/Header';
 import Card from '../components/Card/Card';
 import styles from '../Page.module.css';
+import Link from 'next/link';
 
 export default function Places() {
   const [places, setPlaces] = useState([]);
@@ -40,6 +41,7 @@ export default function Places() {
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
+<<<<<<< HEAD
         <div className={`${styles.grid} ${!loading ? styles.loaded : ''}`}>
           {places.map((place, index) => (
             <Card
@@ -51,6 +53,42 @@ export default function Places() {
               lon={place.lon}
             />
           ))}
+=======
+        <div className={styles.grid}>
+          {places
+            .filter((place) => place.image && !place.image.includes('placeholder'))
+            .map((place, index) => {
+              const slug = encodeURIComponent(place.title.toLowerCase().replace(/\s+/g, '-'));
+
+              return (
+                <div key={index} className={styles.cardLink}>
+                  <Link
+                    href={{
+                      pathname: `/attraction_info/${slug}`,
+                      query: {
+                        title: place.title,
+                        address: place.address,
+                        image: place.image,
+                        lat: place.lat,
+                        lon: place.lon,
+                        description: place.description || '',
+                        phone: place.phone || '',
+                        website: place.website || '',
+                      },
+                    }}
+                  >
+                    <Card
+                      title={place.title}
+                      address={place.address}
+                      image={place.image}
+                      lat={place.lat}
+                      lon={place.lon}
+                    />
+                  </Link>
+                </div>
+              );
+            })}
+>>>>>>> 095983499535cb0ef0d99cbc3d443b63f7e5caf8
         </div>
       </main>
     </>

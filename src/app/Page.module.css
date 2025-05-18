@@ -49,3 +49,16 @@
   align-items: center;
   gap: 1rem;
 }
+<<<<<<< HEAD
+=======
+
+.cardLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cardLink:hover {
+  transform: scale(1.02);
+}
+>>>>>>> 095983499535cb0ef0d99cbc3d443b63f7e5caf8
