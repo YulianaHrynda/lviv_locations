@@ -1,0 +1,48 @@
+.origins {
+  padding: 4rem 4rem 0 4rem;
+}
+
+.container {
+    position: relative;
+}
+
+.title {
+    font-size: 6rem;
+    font-weight: 700;
+    position: absolute;
+    top: -1.5rem;
+    left: 0;
+    z-index: 2;
+}
+
+.content {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding-top: 4rem;
+}
+
+.imageWrapper {
+    flex: 1 1 400px;
+    position: relative;
+    z-index: 1;
+}
+
+.image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.text {
+    flex: 1 1 400px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.text strong {
+    font-weight: 700;
+}
