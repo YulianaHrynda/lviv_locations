@@ -1,31 +1,33 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Header from '../components/Header/Header';
 import Card from '../components/Card/Card';
 import styles from '../Page.module.css';
 
-const attractions = [
-  {
-    title: 'City Hall Tower',
-    address: 'Rynok Square',
-    image: '/cityhall.jpg',
-  },
-  {
-    title: 'Ivan Franko Park',
-    address: 'Universytetska St.',
-    image: '/franko-park.jpg',
-  },
-  {
-    title: 'Lviv Tram Ride',
-    address: 'Throughout the City',
-    image: '/tram.jpg',
-  },
-  {
-    title: 'Street Performers Zone',
-    address: 'Rynok Square Area',
-    image: '/performers.jpg',
-  },
-];
-
 export default function Attractions() {
+  const [attractions, setAttractions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchAttractions = async () => {
+      try {
+        const res = await fetch('/api/attractions');
+        if (!res.ok) throw new Error('Failed to fetch data');
+        const data = await res.json();
+        setAttractions(data);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to load attractions.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAttractions();
+  }, []);
+
   return (
     <>
       <Header />
@@ -36,6 +38,10 @@ export default function Attractions() {
           parks, and admire centuries-old architecture. Street performers, colorful markets, and historic trams
           add to the city’s unique charm.
         </p>
+
+        {loading && <p>Loading...</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+
         <div className={styles.grid}>
           {attractions.map((item, index) => (
             <Card
@@ -43,6 +49,8 @@ export default function Attractions() {
               title={item.title}
               address={item.address}
               image={item.image}
+              lat={item.lat}
+              lon={item.lon}
             />
           ))}
         </div>
