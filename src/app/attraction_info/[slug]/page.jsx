@@ -13,8 +13,11 @@ export default function AttractionPage() {
   const title = params.get('title');
   const address = params.get('address');
   const image = params.get('image');
-  const lat = params.get('lat');
-  const lon = params.get('lon');
+  const lat = parseFloat(params.get('lat'));
+  const lon = parseFloat(params.get('lon'));
+  const description = params.get('description') || '';
+  const phone = params.get('phone') || '';
+  const website = params.get('website') || '';
 
   return (
     <>
@@ -26,6 +29,9 @@ export default function AttractionPage() {
           image={image}
           lat={lat}
           lon={lon}
+          description={description}
+          phone={phone}
+          website={website}
         />
         <Reviews placeId={title} />
         <RewievForm placeId={title} />

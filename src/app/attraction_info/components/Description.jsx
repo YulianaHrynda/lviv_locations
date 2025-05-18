@@ -3,22 +3,23 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styles from '../styles/description.module.css';
 
-const Description = ({ title, address, image }) => {
+const Description = ({ title, address, image, description, phone, website }) => {
   return (
     <div className={styles.container}>
-      <h1 className={styles.header}>{title}</h1>
+      <h1 className={styles.header}>{title || 'Attraction'}</h1>
+
       <p className={styles.description}>
-        {/* Static mock description — you can replace with real data later */}
-        Is located in the premises of the former city gun factory, built in the 16th century. It used to be part of the defense system of the city...
+        {description ||
+          'Discover this location in Lviv — a fascinating destination with historical and cultural value.'}
       </p>
+
       <div className={styles.imageWrapper}>
         <Image
           src={image || '/images/placeholder.svg'}
           alt={title}
-          layout="responsive"
           width={1920}
           height={1080}
-          objectFit="cover"
+          style={{ objectFit: 'cover', width: '100%', height: 'auto' }}
         />
       </div>
 
@@ -27,16 +28,22 @@ const Description = ({ title, address, image }) => {
           <div><strong>ADDRESS</strong></div>
           <div>{address || 'Lviv'}</div>
         </div>
+
         <div className={`${styles.detailsColumn} ${styles.center}`}>
           <div><strong>CONTACTS</strong></div>
-          <div>+38 (032) 235 86 61</div>
+          <div>{phone || 'Not provided'}</div>
         </div>
+
         <div className={`${styles.detailsColumn} ${styles.right}`}>
           <div><strong>WEBSITE</strong></div>
           <div>
-            <Link href="https://www.lhm.lviv.com" target="_blank" rel="noopener noreferrer">
-              www.lhm.lviv.com
-            </Link>
+            {website ? (
+              <Link href={website} target="_blank" rel="noopener noreferrer">
+                {website.replace(/^https?:\/\//, '')}
+              </Link>
+            ) : (
+              'Not available'
+            )}
           </div>
         </div>
       </div>

@@ -44,34 +44,39 @@ export default function Attractions() {
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
         <div className={styles.grid}>
-          {attractions.map((item, index) => {
-            const slug = encodeURIComponent(item.title.toLowerCase().replace(/\s+/g, '-'));
+          {attractions
+            .filter((item) => item.image && !item.image.includes('placeholder'))
+            .map((item, index) => {
+              const slug = encodeURIComponent(item.title.toLowerCase().replace(/\s+/g, '-'));
 
-            return (
-              <Link
-                key={index}
-                href={{
-                  pathname: `/attraction_info/${slug}`,
-                  query: {
-                    title: item.title,
-                    address: item.address,
-                    image: item.image,
-                    lat: item.lat,
-                    lon: item.lon,
-                  },
-                }}
-                className={styles.cardLink}
-              >
-                <Card
-                  title={item.title}
-                  address={item.address}
-                  image={item.image}
-                  lat={item.lat}
-                  lon={item.lon}
-                />
-              </Link>
-            );
-          })}
+              return (
+                <div key={index} className={styles.cardLink}>
+                  <Link
+                    href={{
+                      pathname: `/attraction_info/${slug}`,
+                      query: {
+                        title: item.title,
+                        address: item.address,
+                        image: item.image,
+                        lat: item.lat,
+                        lon: item.lon,
+                        description: item.description || '',
+                        phone: item.phone || '',
+                        website: item.website || '',
+                      },
+                    }}
+                  >
+                    <Card
+                      title={item.title}
+                      address={item.address}
+                      image={item.image}
+                      lat={item.lat}
+                      lon={item.lon}
+                    />
+                  </Link>
+                </div>
+              );
+            })}
         </div>
       </main>
     </>

@@ -39,10 +39,9 @@
 }
 
 .cardLink {
+  display: block;
   text-decoration: none;
   color: inherit;
-  display: block;
-  transition: transform 0.2s ease-in-out;
 }
 
 .cardLink:hover {
