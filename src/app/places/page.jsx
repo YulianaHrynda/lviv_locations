@@ -40,7 +40,7 @@ export default function Places() {
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        <div className={styles.grid}>
+        <div className={`${styles.grid} ${!loading ? styles.loaded : ''}`}>
           {places.map((place, index) => (
             <Card
               key={index}

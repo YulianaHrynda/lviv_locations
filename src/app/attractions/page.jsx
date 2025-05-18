@@ -42,7 +42,7 @@ export default function Attractions() {
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        <div className={styles.grid}>
+        <div className={`${styles.grid} ${!loading ? styles.loaded : ''}`}>
           {attractions.map((item, index) => (
             <Card
               key={index}

@@ -37,13 +37,13 @@
 .imageWrapper {
     position: absolute;
     top: 0;
-    right: -6rem;
+    right: -12rem; /* Increased negative value to push it further right */
     z-index: -1;
 }
 
 .image {
-    max-width: 400px;
-    width: 100%;
+    max-width: none;          /* Remove max-width limit */
+    width: 500px;             /* Make image larger */
     height: auto;
     object-fit: cover;
 }
