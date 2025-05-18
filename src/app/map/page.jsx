@@ -1,8 +1,10 @@
 'use client';
 
 import Header from '../components/Header/Header';
-import Map from '../components/Map/Map';
+import dynamic from 'next/dynamic';
 import pageStyles from '../Page.module.css';
+
+const Map = dynamic(() => import('../components/Map/Map'), { ssr: false });
 
 export default function MapPage() {
   return (
