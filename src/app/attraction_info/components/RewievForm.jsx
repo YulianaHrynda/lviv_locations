@@ -22,7 +22,7 @@ const RewievForm = () => {
           </div>
 
           <div>
-            <label>YOUR RATING</label>
+            <label className={styles.ratingLabel}>YOUR RATING</label>
             <div className={styles['rating-container']}>
               {[1, 2, 3, 4, 5].map((star) => (
                 <span key={star} onClick={() => handleStarClick(star)}>
