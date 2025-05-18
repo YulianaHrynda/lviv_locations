@@ -1,7 +1,7 @@
 import Header from '../components/Header/Header';
 import Description from './components/Description';
-import Reviews from './components/Reviews/Reviews';
-import ReviewForm from './components/Reviews/ReviewForm';
+import Reviews from './components/Reviews';
+import ReviewForm from './components/ReviewForm';
 
 const PLACE_ID = "arsenal-museum";
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import Header from '../components/Header/Header';
 import Card from '../components/Card/Card';
 import styles from '../Page.module.css';
@@ -43,16 +44,34 @@ export default function Attractions() {
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
         <div className={styles.grid}>
-          {attractions.map((item, index) => (
-            <Card
-              key={index}
-              title={item.title}
-              address={item.address}
-              image={item.image}
-              lat={item.lat}
-              lon={item.lon}
-            />
-          ))}
+          {attractions.map((item, index) => {
+            const slug = encodeURIComponent(item.title.toLowerCase().replace(/\s+/g, '-'));
+
+            return (
+              <Link
+                key={index}
+                href={{
+                  pathname: `/attraction_info/${slug}`,
+                  query: {
+                    title: item.title,
+                    address: item.address,
+                    image: item.image,
+                    lat: item.lat,
+                    lon: item.lon,
+                  },
+                }}
+                className={styles.cardLink}
+              >
+                <Card
+                  title={item.title}
+                  address={item.address}
+                  image={item.image}
+                  lat={item.lat}
+                  lon={item.lon}
+                />
+              </Link>
+            );
+          })}
         </div>
       </main>
     </>

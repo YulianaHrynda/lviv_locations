@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import { addReview } from '../firebase/addReview';
 import styles from '../styles/review_form.module.css';
 
 const RewievForm = ({ placeId, onSubmitSuccess }) => {
@@ -10,11 +9,20 @@ const RewievForm = ({ placeId, onSubmitSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await addReview(placeId, name, selectedRating, description);
+
+    const review = {
+      placeId,
+      name,
+      grade: selectedRating,
+      description,
+    };
+
+    console.log('Review submitted:', review);
+
     setName('');
     setDescription('');
     setSelectedRating(0);
-    if (onSubmitSuccess) onSubmitSuccess(); // refresh reviews
+    if (onSubmitSuccess) onSubmitSuccess();
   };
 
   return (
@@ -39,7 +47,11 @@ const RewievForm = ({ placeId, onSubmitSuccess }) => {
             <label className={styles.ratingLabel}>YOUR RATING</label>
             <div className={styles['rating-container']}>
               {[1, 2, 3, 4, 5].map((star) => (
-                <span key={star} onClick={() => setSelectedRating(star)}>
+                <span
+                  key={star}
+                  onClick={() => setSelectedRating(star)}
+                  style={{ cursor: 'pointer', fontSize: '1.5rem' }}
+                >
                   {star <= selectedRating ? '★' : '☆'}
                 </span>
               ))}

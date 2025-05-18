@@ -1,9 +1,7 @@
-'use client';
-
-import styles from './Card.module.css';
 import Image from 'next/image';
+import styles from './Card.module.css';
 
-const Card = ({ title, address, image }) => {
+export default function Card({ title, address, image }) {
   return (
     <div className={styles.card}>
       <Image src={image} alt={title} width={400} height={250} className={styles.image} />
@@ -11,6 +9,4 @@ const Card = ({ title, address, image }) => {
       <p className={styles.address}>{address}</p>
     </div>
   );
-};
-
-export default Card;
+}

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header/Header';
 import Card from '../components/Card/Card';
 import styles from '../Page.module.css';
+import Link from 'next/link';
 
 export default function Museums() {
   const [museums, setMuseums] = useState([]);
@@ -44,17 +45,34 @@ export default function Museums() {
         <div className={styles.grid}>
           {museums
             .filter((museum) => museum.image && !museum.image.includes('placeholder'))
-            .map((museum, index) => (
-              <Card
-                key={index}
-                title={museum.title}
-                address={museum.address}
-                image={museum.image}
-                link={museum.link}
-                lat={museum.lat}
-                lon={museum.lon}
-              />
-            ))}
+            .map((museum, index) => {
+              const slug = encodeURIComponent(museum.title.toLowerCase().replace(/\s+/g, '-'));
+
+              return (
+                <Link
+                  key={index}
+                  href={{
+                    pathname: `/attraction_info/${slug}`,
+                    query: {
+                      title: museum.title,
+                      address: museum.address,
+                      image: museum.image,
+                      lat: museum.lat,
+                      lon: museum.lon,
+                    },
+                  }}
+                  className={styles.cardLink}
+                >
+                  <Card
+                    title={museum.title}
+                    address={museum.address}
+                    image={museum.image}
+                    lat={museum.lat}
+                    lon={museum.lon}
+                  />
+                </Link>
+              );
+            })}
         </div>
       </main>
     </>

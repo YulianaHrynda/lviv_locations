@@ -1,19 +1,31 @@
 'use client';
+
 import { useEffect, useState } from 'react';
-import { getReviews } from '../firebase/getReviews';
 import Image from 'next/image';
 import styles from '../styles/reviews.module.css';
 
 const Reviews = ({ placeId }) => {
   const [reviews, setReviews] = useState([]);
 
-  const fetchReviews = async () => {
-    const data = await getReviews(placeId);
-    setReviews(data);
-  };
-
   useEffect(() => {
-    if (placeId) fetchReviews();
+    if (placeId) {
+      const mockReviews = [
+        {
+          id: 1,
+          name: 'Anna',
+          grade: 5,
+          description: 'Amazing experience! Highly recommend.',
+        },
+        {
+          id: 2,
+          name: 'Mark',
+          grade: 4,
+          description: 'Great place but a bit crowded.',
+        },
+      ];
+
+      setReviews(mockReviews);
+    }
   }, [placeId]);
 
   return (

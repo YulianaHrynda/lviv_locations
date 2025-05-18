@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header/Header';
 import Card from '../components/Card/Card';
 import styles from '../Page.module.css';
+import Link from 'next/link';
 
 export default function Places() {
   const [places, setPlaces] = useState([]);
@@ -41,16 +42,35 @@ export default function Places() {
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
         <div className={styles.grid}>
-          {places.map((place, index) => (
-            <Card
-              key={index}
-              title={place.title}
-              address={place.address}
-              image={place.image}
-              lat={place.lat}
-              lon={place.lon}
-            />
-          ))}
+          {places
+            .filter((place) => place.image && !place.image.includes('placeholder'))
+            .map((place, index) => {
+              const slug = encodeURIComponent(place.title.toLowerCase().replace(/\s+/g, '-'));
+              return (
+                <Link
+                  key={index}
+                  href={{
+                    pathname: `/attraction_info/${slug}`,
+                    query: {
+                      title: place.title,
+                      address: place.address,
+                      image: place.image,
+                      lat: place.lat,
+                      lon: place.lon,
+                    },
+                  }}
+                  className={styles.cardLink}
+                >
+                  <Card
+                    title={place.title}
+                    address={place.address}
+                    image={place.image}
+                    lat={place.lat}
+                    lon={place.lon}
+                  />
+                </Link>
+              );
+            })}
         </div>
       </main>
     </>

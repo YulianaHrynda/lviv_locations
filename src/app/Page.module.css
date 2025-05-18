@@ -38,6 +38,13 @@
   margin-bottom: 4rem;
 }
 
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.2s ease-in-out;
+}
 
-
-  
+.cardLink:hover {
+  transform: scale(1.02);
+}
