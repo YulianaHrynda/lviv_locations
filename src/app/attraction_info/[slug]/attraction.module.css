@@ -1,32 +1,32 @@
 .container {
-  max-width: 800px;
-  margin: auto;
-  padding: 2rem;
-  text-align: center;
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    text-align: center;
 }
 
 .title {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .address {
-  font-size: 1.2rem;
-  color: #666;
+    font-size: 1.2rem;
+    color: #666;
 }
 
 .imageWrapper {
-  margin-top: 1rem;
+    margin-top: 1rem;
 }
 
 .image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
 }
 
 .coords {
-  margin-top: 1rem;
-  font-size: 0.95rem;
-  color: #444;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: #444;
 }

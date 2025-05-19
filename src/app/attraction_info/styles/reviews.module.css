@@ -1,12 +1,11 @@
 .container {
   max-width: 790px;
-  height: 300px; /* scrollable height */
-  overflow-y: auto; /* makes only this scroll */
+  height: 300px;
+  overflow-y: auto;
   padding-right: 10px;
   margin: 0 auto;
 }
 
-/* Cross-browser custom scrollbar */
 .container::-webkit-scrollbar {
   width: 8px;
 }
@@ -20,7 +19,6 @@
   border-radius: 4px;
 }
 
-/* Firefox fallback (won’t affect unsupported browsers) */
 @supports (scrollbar-width: thin) {
   .container {
     scrollbar-width: thin;
