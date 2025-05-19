@@ -22,7 +22,7 @@ const Heritage = () => {
       >
         <div className={styles.imageWrapper}>
           <Image
-            src="/images/heritage.png"
+            src="/images/lviv-beauty.jpg"
             alt="Heritage Tower"
             width={500}
             height={600}
