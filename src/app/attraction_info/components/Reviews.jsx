@@ -32,12 +32,14 @@ const Reviews = ({ placeId }) => {
         <h1 className={styles.heading}>REVIEWS</h1>
       </div>
 
-      {loading && <p>Loading reviews...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {loading && <p className={styles.status}>Loading reviews...</p>}
+      {error && <p className={styles.statusError}>{error}</p>}
 
-      <div className={styles.container}>
+      <div className={`${styles.container} ${reviews.length === 0 ? styles.noReviewsMargin : ''}`}>
         {reviews.length === 0 ? (
-          <p>No reviews yet. Be the first to leave one!</p>
+          <div className={styles.noReviewsBox}>
+            <p>No reviews yet. Be the first to leave one!</p>
+          </div>
         ) : (
           reviews.map((review, index) => (
             <div className={styles.review} key={review.id || index}>

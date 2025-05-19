@@ -1,38 +1,36 @@
 .container {
   max-width: 790px;
-  height: 300px; /* scrollable height */
-  overflow-y: auto; /* makes only this scroll */
+  height: 300px;
+  overflow-y: auto;
   padding-right: 10px;
   margin: 0 auto;
 }
 
-/* Cross-browser custom scrollbar */
 .container::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 
 .container::-webkit-scrollbar-track {
-  background: white;
+    background: white;
 }
 
 .container::-webkit-scrollbar-thumb {
-  background-color: black;
-  border-radius: 4px;
+    background-color: black;
+    border-radius: 4px;
 }
 
-/* Firefox fallback (won’t affect unsupported browsers) */
 @supports (scrollbar-width: thin) {
   .container {
-    scrollbar-width: thin;
-    scrollbar-color: black white;
+      scrollbar-width: thin;
+      scrollbar-color: black white;
   }
 }
 
 .review {
-  border: 1px solid #000;
-  padding: 16px;
-  margin-bottom: 16px;
-  background-color: #fff;
+    border: 1px solid #000;
+    padding: 16px;
+    margin-bottom: 16px;
+    background-color: #fff;
 }
 
 .header {
@@ -44,26 +42,59 @@
 }
 
 .heading_div {
-  max-width: 790px;
-  margin: 0 auto;
-  padding-right: 10px;
-  /* optional: to align text right inside */
-  text-align: right;
+    max-width: 790px;
+    margin: 0 auto;
+    padding-right: 10px;
+    text-align: right;
 }
 
 .heading {
-  font-size: 64px;
-  font-weight: 900;
-  margin: 0 0 24px 0;
-  text-align: right;
-  max-width: 800px;
-  width: 100%;
-  margin-left: auto; /* push it to the right within max-width */
+    font-size: 64px;
+    font-weight: 900;
+    margin: 0 0 24px 0;
+    text-align: right;
+    max-width: 800px;
+    width: 100%;
+    margin-left: auto;
 }
 
 .stars {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 20px; /* adds space below the stars */
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 20px;
+}
+
+.noReviewsBox {
+    border: 2px dashed #ccc;
+    padding: 3rem 2rem;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin: 2rem auto;
+    max-width: 700px;
+    min-height: 200px;
+    border-radius: 12px;
+    color: #333;
+    background-color: #fdfdfd;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+
+.status {
+    text-align: center;
+    color: #555;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+.statusError {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    margin-top: 1rem;
 }
