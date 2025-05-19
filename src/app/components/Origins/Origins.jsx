@@ -1,12 +1,22 @@
 'use client';
 
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import styles from './Origins.module.css';
 import Image from 'next/image';
 
 const Origins = () => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { margin: '0px 0px -100px 0px', once: false });
+
   return (
-    <section className={styles.origins}>
-      <div className={styles.center}>
+    <section className={styles.origins} ref={ref}>
+      <motion.div
+        className={styles.center}
+        initial={{ opacity: 0, y: 50 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0.2, y: 40 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+      >
         <h2 className={styles.title}>ORIGINS</h2>
         <div className={styles.content}>
           <div className={styles.imageWrapper}>
@@ -26,7 +36,7 @@ const Origins = () => {
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

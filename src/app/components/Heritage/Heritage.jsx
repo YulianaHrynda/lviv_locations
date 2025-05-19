@@ -1,12 +1,25 @@
 'use client';
 
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import styles from './Heritage.module.css';
 import Image from 'next/image';
 
 const Heritage = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, {
+    margin: '0px 0px -100px 0px',
+    once: false,
+  });
+
   return (
-    <section className={styles.heritage}>
-      <div className={styles.container}>
+    <section className={styles.heritage} ref={ref}>
+      <motion.div
+        className={styles.container}
+        initial={{ opacity: 0, y: 50 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.3, y: 30 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+      >
         <div className={styles.imageWrapper}>
           <Image
             src="/images/heritage.png"
@@ -25,7 +38,7 @@ const Heritage = () => {
             climbing the tower of the City Hall, or exploring the mysterious courtyards, you’ll feel the pulse of history all around you.
           </p>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

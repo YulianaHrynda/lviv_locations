@@ -3,13 +3,13 @@
     justify-content: space-between;
     align-items: center;
     padding: 2rem 4rem;
-    position: fixed; /* Changed from relative to fixed */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 20px;
-    background-color: #fff; /* Ensure header is visible over content */
-    z-index: 1000; /* Ensure it stays above other elements */
+    background-color: #fff;
+    z-index: 1000;
 }
 
 .logo {
