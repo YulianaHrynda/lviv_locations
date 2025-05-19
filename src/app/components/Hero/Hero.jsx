@@ -17,7 +17,6 @@ const Hero = () => {
             <span className={styles.outlined}>WORLD</span>
           </div>
         </div>
-
         <div className={styles.imageWrapper}>
           <Image
             src="/images/lviv-main.png"
@@ -27,8 +26,6 @@ const Hero = () => {
             className={styles.image}
           />
         </div>
-
-        <p className={styles.caption}>Discover the Rich History of Lviv</p>
       </div>
     </section>
   );

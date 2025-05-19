@@ -5,7 +5,6 @@ import styles from './not-found/styles/error.module.css';
 
 const Error = () => {
   const fallbackImage = '/images/oia-uia.gif';
-
   return (
     <div className={styles?.container}>
       <h1 className={styles?.heading}>PAGE NOT FOUND</h1>
