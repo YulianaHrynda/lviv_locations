@@ -16,12 +16,15 @@ const Heritage = () => {
             className={styles.image}
           />
         </div>
-        <h2 className={styles.title}>HERITAGE</h2>
-        <p className={styles.description}>
-          The city’s Old Town is a <strong>UNESCO</strong> World Heritage Site, filled with Gothic, Baroque, and Renaissance buildings that whisper tales of
-          merchants, scholars, and revolutionaries. Whether you're wandering through Rynok Square, climbing the tower of the City Hall, or exploring the
-          mysterious courtyards, you’ll feel the pulse of history all around you.
-        </p>
+
+        <div className={styles.textContent}>
+          <h2 className={styles.title}>HERITAGE</h2>
+          <p className={styles.description}>
+            The city’s Old Town is a <strong>UNESCO</strong> World Heritage Site, filled with Gothic, Baroque, and Renaissance buildings
+            that whisper tales of merchants, scholars, and revolutionaries. Whether you're wandering through Rynok Square,
+            climbing the tower of the City Hall, or exploring the mysterious courtyards, you’ll feel the pulse of history all around you.
+          </p>
+        </div>
       </div>
     </section>
   );
